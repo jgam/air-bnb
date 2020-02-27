@@ -10,7 +10,7 @@ from users import models as user_models
 class AbstractItem(core_models.TimeStampedModel):
     """Abstract Item"""
     name = models.CharField(max_length=80)
-    #subtitle = models.CharField(default="",max_length=80)
+    # subtitle = models.CharField(default="",max_length=80)
 
     class Meta:
         abstract = True

@@ -17,3 +17,4 @@ allow_prereleases = true
 [packages]
 django = "==2.2.5"
 pillow = "*"
+django-countries = "*"

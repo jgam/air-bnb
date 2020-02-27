@@ -10,7 +10,7 @@ from users import models as user_models
 class AbstractItem(core_models.TimeStampedModel):
     """Abstract Item"""
     name = models.CharField(max_length=80)
-    subtitle = models.CharField(max_length=80)
+    #subtitle = models.CharField(default="",max_length=80)
 
     class Meta:
         abstract = True
@@ -20,7 +20,26 @@ class AbstractItem(core_models.TimeStampedModel):
 
 
 class RoomType(AbstractItem):
-    pass
+    class Meta:
+        verbose_name_plural = "Room Type"
+
+
+class Amenity(AbstractItem):
+    """ RoomType Object Definition"""
+    class Meta:
+        verbose_name_plural = "Amenities"
+
+
+class Facility(AbstractItem):
+    """facility Model Definition"""
+    class Meta:
+        verbose_name_plural = "Facilities"
+
+
+class HouseRule(AbstractItem):
+    """HouseRule Model Definition"""
+    class Meta:
+        verbose_name_plural = "House Rule"
 
 
 class Room(core_models.TimeStampedModel):
@@ -41,7 +60,10 @@ class Room(core_models.TimeStampedModel):
     check_out = models.TimeField()
     instant_book = models.BooleanField(default=False)
     host = models.ForeignKey(user_models.User, on_delete=models.CASCADE)
-    room_type = models.ManyToManyField(RoomType, blank=True)
+    room_type = models.ForeignKey(RoomType, on_delete=models.SET_NULL, null=True)
+    amenities = models.ManyToManyField(Amenity, blank=True)
+    facilities = models.ManyToManyField(Facility, blank=True)
+    house_rules = models.ManyToManyField(HouseRule, blank=True)
 
     def __str__(self):
         return self.name

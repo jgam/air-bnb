@@ -18,3 +18,4 @@ allow_prereleases = true
 django = "==2.2.5"
 pillow = "*"
 django-countries = "*"
+django-seed = "*"

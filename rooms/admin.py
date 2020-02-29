@@ -16,11 +16,19 @@ class ItemAdmin(admin.ModelAdmin):
 
     def used_by(self, obj):
         return obj.rooms.count()
+    pass
+
+
+class PhotoInline(admin.TabularInline):
+
+    model = models.Photo
 
 
 @admin.register(models.Room)
 class RoomAdmin(admin.ModelAdmin):
     """Room Admin Definition"""
+
+    inLines = (PhotoInline,)
 
     fieldsets = (
         (
@@ -37,7 +45,8 @@ class RoomAdmin(admin.ModelAdmin):
         ),
         (
             "More About the Space",
-            {"classes": ("collapse",), "fields": ("amenities", "facilities", "house_rules")}
+            {"classes": ("collapse",), "fields": (
+                "amenities", "facilities", "house_rules")}
         ),
         ("Last Details", {"fields": ("host",)}),
     )
@@ -70,6 +79,8 @@ class RoomAdmin(admin.ModelAdmin):
         "country",
     )
 
+    raw_id_fields = ("host", )
+
     search_fields = ("^city", "^host__username")
 
     filter_horizontal = ("amenities", "facilities", "house_rules")
@@ -81,15 +92,13 @@ class RoomAdmin(admin.ModelAdmin):
         return obj.photos.count()
 
 
-
-
 @admin.register(models.Photo)
 class PhotoAdmin(admin.ModelAdmin):
     """Photo Admin Definition"""
     list_display = ('__str__', 'get_thumbnail')
 
-
     # obj is the model that we are inheriting
+
     def get_thumbnail(self, obj):
         print(obj.file)
         return mark_safe(f'<img width="50px" src="{obj.file.url}" />')

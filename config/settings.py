@@ -67,10 +67,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'config.urls'
 
+# templates is where to show the views. You have to specifiy the DIRS
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

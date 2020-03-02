@@ -39,7 +39,7 @@ def search(request):
     city = request.GET.get("city", "anywhere")
     city = str.capitalize(city)
     country = request.GET.get("country", "KR")
-    room_type = int(request.GET.get("country", 0))
+    room_type = int(request.GET.get("room_type", 0))
 
     price = int(request.GET.get("price", 0))
     guests = int(request.GET.get("guests", 0))
@@ -57,7 +57,9 @@ def search(request):
         "guests": guests,
         "bedrooms": bedrooms,
         "beds": beds,
-        "baths": baths
+        "baths": baths,
+        "s_amenities": s_amenities,
+        "s_facilities": s_facilities,
     }
 
     room_types = models.RoomType.objects.all()

@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from django_countries import countries
 from django.http import Http404
 from django.urls import reverse
-from . import models
+from . import models, forms
 
 # Create your views here.
 
@@ -35,6 +35,7 @@ def room_detail(request, pk):
         # return redirect(reverse("core:home"))
 
 
+"""
 def search(request):
     city = request.GET.get("city", "anywhere")
     city = str.capitalize(city)
@@ -122,3 +123,9 @@ def search(request):
         **choices,
         "rooms": rooms
     })
+"""
+
+
+def search(request):
+    form = forms.SearchForm()
+    return render(request, "rooms/search.html", {"form": form})

@@ -1,5 +1,5 @@
 from django import forms
-from django_countries.widgets import CountryField
+from django_countries.fields import CountryField
 from . import models
 
 # this is form field
@@ -16,9 +16,9 @@ class SearchForm(forms.Form):
     bedrooms = forms.IntegerField(required=False)
     beds = forms.IntegerField(required=False)
     baths = forms.IntegerField(required=False)
-    instant_book = forms.BooleanField(requred=False)
-    superhost = forms.BooleanField(requred=False)
+    instant_book = forms.BooleanField(required=False)
+    superhost = forms.BooleanField(required=False)
     amenities = forms.ModelMultipleChoiceField(
-        queryset=models.Amenity.objects.all(), widget=forms.CheckboxSelectMultiple)
+        required=False, queryset=models.Amenity.objects.all(), widget=forms.CheckboxSelectMultiple)
     facilities = forms.ModelMultipleChoiceField(
-        queryset=models.Facility.objects.all(), widget=forms.CheckboxSelectMultiple)
+        required=False, queryset=models.Facility.objects.all(), widget=forms.CheckboxSelectMultiple)

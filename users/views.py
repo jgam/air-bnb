@@ -12,4 +12,6 @@ class LoginView(View):
 
     def post(self, request):
         form = forms.LoginForm(request.POST)
-        print(form)
+        if form_is_valid():
+            print(form.cleaned_data)
+        print(dir(form))

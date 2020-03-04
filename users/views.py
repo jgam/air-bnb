@@ -4,6 +4,7 @@ from django.views import View
 from . import forms
 from django.contrib.auth import authenticate, login, logout
 from django.views.generic import FormView
+from . import forms, models
 
 # Create your views here.
 
@@ -66,3 +67,17 @@ class SignUpView(FormView):
             login(self.request, user)
         user.verify_email()
         return super().form_valid(form)
+
+
+def complete_verification(request, key):
+    try:
+        user = models.User.objects.get(email_secret=key)
+        user.email_verified = True
+        user.email_secret = ""
+        user.save()
+        # todo: add success message
+    except models.User.DoesNotExist:
+        # todo: add error message
+        pass
+    return redirect(reverse("core:home"))
+    

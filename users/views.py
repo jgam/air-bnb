@@ -91,14 +91,16 @@ def github_login(request):
         f"https://github.com/login/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&scope=read:user"
     )
 
+
 class GithubException(Exception):
     pass
+
 
 def github_callback(request):
     try:
         client_id = os.environ.get("GH_ID")
         client_secret = os.environ.get("GH_SECRET")
-        #this part is where we get the code from authorization
+        # this part is where we get the code from authorization
         code = request.GET.get("code", None)
         if code is not None:
             token_request = request.post(
@@ -127,10 +129,11 @@ def github_callback(request):
                             # trying to login but method is not right
                             raise GithubException
                     except models.User.DoesNotExist:
-                        user = models.User.objects.create(email=email, first_name=name, username=email, bio=bio, login_method=models.User.LOGIN_GITHUB)
+                        user = models.User.objects.create(
+                            email=email, first_name=name, username=email, bio=bio, login_method=models.User.LOGIN_GITHUB)
                         user.set_unusable_password()
                         user.save()
-                    login(request, new_user)
+                    login(request, user)
                     return redirect(reverse("core:home"))
                 else:
                     raise GithubException()
@@ -138,3 +141,13 @@ def github_callback(request):
             raise GithubException()
     except GithubException:
         return redirect(reverse("users:login"))
+
+
+def kakap_login(request):
+    app_key = os.environ.get("K_KEY")
+    redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
+    return redirect(f"https://kauth.kakao.com/ /oauth/authorize?client_id={app_key}&redirect_uri={redirect_uri}&response_type=code")
+
+
+def kakao_callback(request):
+    pass

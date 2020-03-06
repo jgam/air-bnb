@@ -7,7 +7,7 @@ from django.views.generic import FormView
 from . import forms, models
 import os
 import requests
-
+from django.core.files.base import ContentFile
 # Create your views here.
 
 
@@ -192,6 +192,11 @@ def kakao_callback(request):
             )
             user.set_unusable_password()
             user.save()
+            if profile_image is not None:
+                photo_request = requests.get(profile_image)
+                user.avatar.save(
+                    f"{nickname}-avatar", ContentFile(photo_request.content)
+                )
         login(request, user)
         return redirect(reverse("core:home"))
     except KakaoException:

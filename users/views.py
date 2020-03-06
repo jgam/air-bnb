@@ -103,10 +103,11 @@ def github_callback(request):
         # this part is where we get the code from authorization
         code = request.GET.get("code", None)
         if code is not None:
-            token_request = request.post(
+            token_request = requests.post(
                 f"https://github.com/login/oauth/access_token?client_id={client_id}&client_secret={client_secret}&code={code}",
                 headers={"Accept": "application/json"},
             )
+
             token_json = token_request.json()
             error = token_json.get("error", None)
             if error is not None:
@@ -115,7 +116,7 @@ def github_callback(request):
                 access_token = token_json.get("access_token")
                 profile_request = requests.get(
                     "https://api.github.com/user", headers={"Authorization": f"token {access_token}",
-                                                            "Accept": "application/json", }),
+                                                            "Accept": "application/json", })
 
                 profile_json = profile_request.json()
                 username = profile_json.get("login", None)

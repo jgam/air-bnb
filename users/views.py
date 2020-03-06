@@ -167,26 +167,35 @@ def kakao_callback(request):
         )
         token_json = token_request.json()
         error = token_json.get("error", None)
+        print('error should be none')
+        print(error)
         if error is not None:
             raise KakaoException()
         access_token = token_json.get("access_token")
         profile_request = requests.get(
-            "https://kapi.kakao.com/v1/user/me",
+            "https://kapi.kakao.com/v2/user/me",
             headers={"Authorization": f"Bearer {access_token}"},
         )
         profile_json = profile_request.json()
+        print(profile_json)
+        print(type(profile_json))
         email = profile_json.get("kaccount_email", None)
+        print('email shouldnt be none')
+        print(email)
         if email is None:
-            raise KakaoException()
+            raise KakaoException("Please give me your email!")
         properties = profile_json.get("properties")
         nickname = properties.get("nickname")
         profile_image = properties.get("profile_image")
         try:
             user = models.User.objects.get(email=email)
+            print('user login method should be kakao')
+            print(user.login_method)
             if user.login_method != models.User.LOGING_KAKAO:
                 raise KakaoException(
                     f"Please log in with: {user.login_method}")
         except models.User.DoesNotExist:
+            print('should create new user')
             user = models.User.objects.create(
                 email=email,
                 username=email,
@@ -196,7 +205,9 @@ def kakao_callback(request):
             )
             user.set_unusable_password()
             user.save()
+            print('user saved')
             if profile_image is not None:
+                print('getting profile image')
                 photo_request = requests.get(profile_image)
                 user.avatar.save(
                     f"{nickname}-avatar", ContentFile(photo_request.content)

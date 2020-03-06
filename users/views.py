@@ -177,13 +177,10 @@ def kakao_callback(request):
             headers={"Authorization": f"Bearer {access_token}"},
         )
         profile_json = profile_request.json()
-        print(profile_json)
-        print(type(profile_json))
         email = profile_json.get("kaccount_email", None)
-        print('email shouldnt be none')
-        print(email)
         if email is None:
-            raise KakaoException("Please give me your email!")
+            # here need more random logic
+            email = 'didntagree@gmail.com'
         properties = profile_json.get("properties")
         nickname = properties.get("nickname")
         profile_image = properties.get("profile_image")

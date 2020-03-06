@@ -127,7 +127,9 @@ def github_callback(request):
                         user = models.User.objects.get(email=email)
                         if user.login_method != models.User.LOGIN_GITHUB:
                             # trying to login but method is not right
-                            raise GithubException
+                            raise GithubException(
+                                f"Please log in with: {user.login_method}"
+                            )
                     except models.User.DoesNotExist:
                         user = models.User.objects.create(
                             email=email, first_name=name, username=email, bio=bio, login_method=models.User.LOGIN_GITHUB, email_verified=True,)
@@ -181,7 +183,8 @@ def kakao_callback(request):
         try:
             user = models.User.objects.get(email=email)
             if user.login_method != models.User.LOGING_KAKAO:
-                raise KakaoException()
+                raise KakaoException(
+                    f"Please log in with: {user.login_method}")
         except models.User.DoesNotExist:
             user = models.User.objects.create(
                 email=email,

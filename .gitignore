@@ -137,3 +137,4 @@ dmypy.json
 #mac
 .DS_Store
 uploads
+node_modules/

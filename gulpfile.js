@@ -16,3 +16,6 @@ const css = () => {
 };
 
 exports.default = css;
+
+// static file will never be changed
+// npm run css finally udpates the css file in css

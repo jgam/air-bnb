@@ -180,7 +180,8 @@ def kakao_callback(request):
         email = profile_json.get("kaccount_email", None)
         if email is None:
             # here need more random logic
-            email = 'didntagree@gmail.com'
+            user_count = models.User.objects.count()
+            email = str(user_count) + 'thuser@gmail.com'
         properties = profile_json.get("properties")
         nickname = properties.get("nickname")
         profile_image = properties.get("profile_image")

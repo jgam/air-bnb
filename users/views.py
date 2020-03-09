@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from . import forms
 from django.contrib.auth import authenticate, login, logout
-from django.views.generic import FormView, DetailView
+from django.views.generic import FormView, DetailView, UpdateView
 from . import forms, models
 import os
 import requests
@@ -233,3 +233,22 @@ class UserProfileView(DetailView):
         context = super().get_context_data(**kwargs)
         context["hello"] = "Hello!"
         return context
+
+
+class UpdateProfileView(UpdateView):
+    """we have something called update view!"""
+    model = models.User
+    template_name = "users/update_profile.html"
+    fields = (
+        "first_name",
+        "last_name",
+        "avatar",
+        "gender",
+        "bio",
+        "birthdate",
+        "language",
+        "currency",
+    )
+
+    def get_object(self, queryset=None):
+        return self.request.user

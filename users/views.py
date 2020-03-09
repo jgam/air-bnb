@@ -3,7 +3,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from . import forms
 from django.contrib.auth import authenticate, login, logout
-from django.views.generic import FormView
+from django.views.generic import FormView, DetailView
 from . import forms, models
 import os
 import requests
@@ -223,3 +223,13 @@ def kakao_callback(request):
         messages.error(request, e)
         return redirect(reverse("users:login"))
     pass
+
+
+class UserProfileView(DetailView):
+    model = models.User
+    context_object_name = "user_obj"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["hello"] = "Hello!"
+        return context

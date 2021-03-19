@@ -15,7 +15,7 @@ python_version = "3.7"
 allow_prereleases = true
 
 [packages]
-django = "==2.2.5"
+django = "==2.2.18"
 pillow = "*"
 django-countries = "*"
 django-seed = "*"
